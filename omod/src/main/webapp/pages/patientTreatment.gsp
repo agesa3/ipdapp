@@ -1,16 +1,23 @@
 <%
 	ui.decorateWith("appui", "standardEmrPage", [title: "Patient Treatment"])
 
-	ui.includeCss("ehrconfigs", "referenceapplication.css")
+	ui.includeCss("ehrconfigs", "jquery.dataTables.min.css")
 	ui.includeCss("ehrconfigs", "onepcssgrid.css")
+	ui.includeCss("ehrconfigs", "referenceapplication.css")
 
+	ui.includeCss("ehrinventoryapp", "main.css")
+	ui.includeCss("ehrconfigs", "custom.css")
+
+	ui.includeJavascript("kenyaui", "pagebus/simple/pagebus.js")
+	ui.includeJavascript("kenyaui", "kenyaui-tabs.js")
+	ui.includeJavascript("kenyaui", "kenyaui-legacy.js")
 	ui.includeJavascript("ehrconfigs", "moment.js")
 	ui.includeJavascript("ehrconfigs", "jquery.dataTables.min.js")
 	ui.includeJavascript("ehrconfigs", "jq.browser.select.js")
-	ui.includeJavascript("ehrconfigs", "knockout-3.4.0.js")
-	ui.includeJavascript("ehrconfigs", "jquery-ui-1.9.2.custom.min.js")
-	ui.includeJavascript("ehrconfigs", "underscore-min.js")
+
+	ui.includeJavascript("ehrconfigs", "knockout-2.2.1.js")
 	ui.includeJavascript("ehrconfigs", "emr.js")
+	ui.includeJavascript("ehrconfigs", "jquery.simplemodal.1.4.4.min.js")
 %>
 
 <script>
@@ -368,10 +375,21 @@ form input:focus, form select:focus, form textarea:focus, form ul.select:focus, 
 #treatmentForm{
 	background: #f9f9f9 none repeat scroll 0 0;
 	margin-top: 3px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
 }
-.simple-form-ui section, .simple-form-ui #confirmation, .simple-form-ui form section, .simple-form-ui form #confirmation {
+#charges-info{
+	display: flex;
+	flex-direction: column;
+	max-width: 1024px;
+	width: 100%;
+}
+#confirmation {
 	min-height: 250px;
-	width: 74%;
+	width: 100%;
+	max-width: 1024px;
 }
 .tasks {
 	background: white none repeat scroll 0 0;
@@ -627,7 +645,7 @@ fieldset select {
 	<div class="clear"></div>
 </div>
 
-<form class="simple-form-ui" id="treatmentForm" method="post">
+<form class="zsimple-form-ui" id="treatmentForm" method="post">
 	<section id="charges-info">
 		<span class="title">Treatment</span>
 
@@ -703,7 +721,7 @@ fieldset select {
 
 			<table id="drugsTable">
 				<thead>
-				<th>Drug Name</th>
+				<th style="width: auto;">Drug Name</th>
 				<th>Formulation</th>
 				<th>Frequency</th>
 				<th>Number of Days</th>
@@ -803,14 +821,14 @@ fieldset select {
 				<input class="drug-name" id="drugName" type="text" >
 			</li>
 			<li>
-				<span>Formulation</span>
-				<select id="formulationsSelect" >
+				<span style="display: block; margin-top: 9px">Formulation</span>
+				<select style="width: 100%;" id="formulationsSelect" >
 					<option>Select Formulation</option>
 				</select>
 			</li>
 			<li>
-				<span>Frequency</span>
-				<select id="drugFrequency">
+				<span style="display: block; margin-top: 9px">Frequency</span>
+				<select style="width: 100%;" id="drugFrequency">
 					<option>Select Frequency</option>
 					<% if (drugFrequencyList!=null &&drugFrequencyList!=""){ %>
 					<% drugFrequencyList.each { dfl -> %>
@@ -822,12 +840,12 @@ fieldset select {
 				</select>
 			</li>
 			<li>
-				<span>Number of Days</span>
-				<input id="drugDays" type="text"  >
+				<span style="display: block; margin-top: 9px">Number of Days</span>
+				<input style="width: 100%;" id="drugDays" type="text"  >
 			</li>
 			<li>
-				<span>Comment</span>
-				<textarea id="drugComment" ></textarea>
+				<span style="display: block; margin-top: 9px">Comment</span>
+				<textarea style="width: 100%;" id="drugComment" ></textarea>
 			</li>
 		</ul>
 

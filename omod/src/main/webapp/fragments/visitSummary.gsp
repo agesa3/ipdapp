@@ -8,7 +8,7 @@
             var visitSummary = jq(this);
             jq(".visit-summary").removeClass("selected");
             jq(visitSummary).addClass("selected");
-            jq.getJSON('${ ui.actionLink("patientdashboardapp", "visitSummary" ,"getVisitSummaryDetails") }',
+            jq.getJSON('${ ui.actionLink("ipdapp", "visitSummary" ,"getVisitSummaryDetails") }',
                 { 'encounterId' : jq(visitSummary).find(".encounter-id").val() }
             ).success(function (data) {
                 var visitDetailTemplate =  _.template(jq("#visit-detail-template").html());

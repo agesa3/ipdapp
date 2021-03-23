@@ -119,7 +119,8 @@ public class PatientInfoFragmentController {
     }
     public void saveVitalStatistics(@RequestParam("admittedId") Integer admittedId,
                                     @RequestParam("patientId") Integer patientId,
-                                    @RequestParam(value = "bloodPressure", required = false) String bloodPressure,
+                                    @RequestParam(value = "systolicBloodPressure", required = false) String systolicBloodPressure,
+                                    @RequestParam(value = "diastolicBloodPressure", required = false) String diastolicBloodPressure,
                                     @RequestParam(value = "pulseRate", required = false) String pulseRate,
                                     @RequestParam(value = "temperature", required = false) String temperature,
                                     @RequestParam(value = "dietAdvised", required = false) String dietAdvised,
@@ -133,7 +134,8 @@ public class PatientInfoFragmentController {
         IpdPatientVitalStatistics ipdPatientVitalStatistics=new IpdPatientVitalStatistics();
         ipdPatientVitalStatistics.setPatient(patient);
         ipdPatientVitalStatistics.setIpdPatientAdmissionLog(admitted.getPatientAdmissionLog());
-        ipdPatientVitalStatistics.setBloodPressure(bloodPressure);
+        ipdPatientVitalStatistics.setSystolicBloodPressure(systolicBloodPressure);
+        ipdPatientVitalStatistics.setDiastolicBloodPressure(diastolicBloodPressure);
         ipdPatientVitalStatistics.setPulseRate(pulseRate);
         ipdPatientVitalStatistics.setTemperature(temperature);
         ipdPatientVitalStatistics.setDietAdvised(dietAdvised);

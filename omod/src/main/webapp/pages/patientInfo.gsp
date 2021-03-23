@@ -140,7 +140,8 @@
 			var vitalStatisticsFormData = {
 				'admittedId': jq('#vitalStatisticsAdmittedID').val(),
 				'patientId': jq('#vitalStatisticsPatientID').val(),
-				'bloodPressure': jq('#vitalStatisticsBloodPressure').val(),
+				'systolicBloodPressure':jq('#vitalStatisticsSystolicBloodPressure').val(),
+				'diastolicBloodPressure': jq('#vitalStatisticsDiastolicBloodPressure').val(),
 				'pulseRate': jq('#vitalStatisticsPulseRate').val(),
 				'temperature': jq('#vitalStatisticsTemperature').val(),
 				'dietAdvised': jq('#vitalStatisticsDietAdvised').val(),
@@ -494,7 +495,7 @@ form input:focus, form select:focus, form textarea:focus, form ul.select:focus, 
 			Visit Status
 		</div>
 		<div class="tag">Admitted</div>
-		<div class="tad">Bed 00${patientInformation.bed}</div>
+		<div class="tad">Bed ${patientInformation.bed}</div>
 	</div>
 
 	<div class="identifiers">
