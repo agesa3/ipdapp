@@ -134,6 +134,137 @@
 			);
 
 		});
+		jq(document).ready(function () {
+			checkFilled();
+		});
+		var errorList ={};
+		 jq("input[type='number']").on("keyup", function() {
+            var inputText = jq(this).val();
+            inputText = inputText.replace(/[^0-9.]/g, '');
+            jq(this).val(inputText);
+        });
+		 jq('#vitalStatisticsSystolicBloodPressure').on("focusout", function() {
+            var maxVal = 250;
+            var minVal = 0;
+            var fieldTypeVal = "Blood Pressure (Systolic)";
+            var idVal = jq(this).attr("id");
+            var localid = "systolicValid";
+            checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+        });
+
+        jq('#vitalStatisticsDiastolicBloodPressure').on("focusout", function() {
+            var maxVal = 150;
+            var minVal = 0;
+            var fieldTypeVal = "Blood Pressure (Diastolic)";
+            var idVal = jq(this).attr("id")
+            var localid = "diastolicValid";
+            checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+        });
+
+		jq('#vitalStatisticsTemperature').on("focusout", function(){
+            var maxVal =43;
+            var minVal=25;
+            var fieldTypeVal="Temperature";
+            var idVal = jq(this).attr("id");
+            var localid ="tempValid";
+            checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+        });
+
+		jq('#vitalStatisticsPulseRate').on("focusout", function() {
+            var maxVal = 230;
+            var minVal = 0;
+            var fieldTypeVal = "Pulse Rate";
+            var idVal = jq(this).attr("id")
+            var localid = "pulseValid";
+            checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+        });
+
+				function checkError(minVal, maxVal, idField, idError, fieldType) {
+        var tempVal = jq('#'+idField).val();
+        var errorLocal = '';
+        var valTemp = 0;
+        if (isNaN(tempVal) && tempVal !== "") {
+            jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' must be a number!</span>');
+            jq("#"+idError).show();
+            jq('#'+idField).attr("validation","false");
+            errorList[fieldType]= "<i>"+fieldType+" must be a number</i><br>";
+        } else if (tempVal > maxVal && !isNaN(tempVal)) {
+            errorLocal = 'greater';
+            valTemp = maxVal;
+            jq('#'+idField).attr("validation","false");
+        } else if (tempVal < minVal && !isNaN(tempVal)) {
+            errorLocal = 'lower';
+            valTemp = minVal;
+            jq('#'+idField).attr("validation","false");
+        } else {
+            if (tempVal === "" && jq('#'+idField).attr("required")==="required") {
+                jq("#"+idField).prop("style", "border-color:red");
+                jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' must be filled in!</span>');
+                jq("#"+idError).show();
+                jq("#"+idField).prop("style", "background-color: #f2bebe;");
+                jq('#'+idField).attr("validation","false");
+                errorList[fieldType]= "<i>"+fieldType+" must be filled in!</i><br/>";
+            } else {
+                delete errorList[fieldType];
+                noError(idError, idField);
+            }
+            checkFilled();
+            return;
+        }
+        jq("#"+idField).prop("style", "border-color:red");
+        jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' cannot be ' + errorLocal + ' than ' + valTemp + '</span>');
+        jq("#"+idError).show();
+        jq("#"+idField).prop("style", "background-color: #f2bebe;");
+        errorList[fieldType]= '<i>'+fieldType+' cannot be ' + errorLocal + ' than ' + valTemp + '</i></br>';
+        checkFilled();
+    }
+
+    function noError(idField, fieldTypeid) {
+        jq('#'+idField).attr("validation","true");
+        jq("#"+fieldTypeid).prop("style", "background-color: #ddffdd;");
+        jq("#"+idField).hide();
+        jq('#'+fieldTypeid).attr("validation","true");
+    }
+
+    function checkFilled() {
+        var checkComplete = true;
+        jq("form#vitalStatisticsForm :input[required]").map(function(idx, elem) {
+            if(jq(this).attr('id')!="vitalStatisticsDietAdvised"){
+					if(jq(elem).val()==''){
+                	checkComplete=false;
+            }
+			}
+        }).get();
+        jq("form#vitalStatisticsForm :input[validation='false']").map(function(idx, elem) {
+            if(jq(elem).attr("validation")==='false'){
+                checkComplete=false;
+            }
+        }).get();
+        if (checkComplete) {
+            jq("#vitalStatisticsButton").removeClass("disabled");
+            jq("#errorsHere").html("");
+            jq("#errorAlert").hide();
+            errorList={};
+        }
+        else{
+            jq("#vitalStatisticsButton").addClass("disabled");
+            var count = 0;
+            var i;
+            var allErrors='';
+            for (i in errorList) {
+                if (errorList.hasOwnProperty(i)) {
+                    count++;
+                    allErrors+=errorList[i];
+                }
+            }
+            if(count!==0) {
+                jq("#errorsHere").html(allErrors);
+                jq("#errorAlert").show();
+            }
+        }
+		return checkComplete;
+    }
+
 
 		jq("#vitalStatisticsButton").click(function(event){
 			var vitalStatisticsForm = jq("#vitalStatisticsForm");
@@ -148,17 +279,23 @@
 				'notes': jq('#vitalStatisticsComment').val(),
 				'ipdWard': jq('#vitalStatisticsIPDWard').val(),
 			};
+			if(checkFilled()){
 			vitalStatisticsForm.submit(
 					jq.getJSON('${ ui.actionLink("ipdapp", "PatientInfo", "saveVitalStatistics") }',vitalStatisticsFormData)
 							.success(function(data) {
+								kenyaui.notifySuccess("Success! Vitals have been updated");
 								location.reload();
 							})
 							.error(function(xhr, status, err) {
 								jq().toastmessage('showErrorToast', "Error:" + err);
 							})
 			);
+			}
+			else{
+				kenyaui.notifyError("Cannot submit! Please Rectify Errors first");
+			}
 		});
-
+		    
 
 		//dicharge patient send post information
 		jq("#dischargeSubmit").click(function(event){
@@ -442,6 +579,24 @@ form input:focus, form select:focus, form textarea:focus, form ul.select:focus, 
 }
 .bp-container[data-people="0"]{
 	background-color: #34bf6e;
+}
+.alert{
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-radius: .25rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
 }
 </style>
 

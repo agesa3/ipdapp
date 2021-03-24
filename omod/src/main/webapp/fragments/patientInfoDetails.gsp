@@ -116,29 +116,40 @@
 		</div>
 
 		<div class="info-body vitals-edit-page" style="display: none;">
+		<div>
+			<div id="errorAlert" class="alert" style="display: none"><b>Please correct the following errors:</b><hr>
+            	<ul id="errorsHere"></ul>
+            </div>
+        </div>
 			<form method="post" id="vitalStatisticsForm" style="margin-bottom: 5px;">
 				<div class="simple-form-ui">
 					<div class="col12 daily-vitals">
 						<label>Blood Pressure (Systolic)</label>
 						<span>
-							<input id="vitalStatisticsSystolicBloodPressure" name="vitalStatisticsSystolicBloodPressure" placeholder="Blood Pressure" type="number"/>
+							<input id="vitalStatisticsSystolicBloodPressure" name="vitalStatisticsSystolicBloodPressure" placeholder="Blood Pressure" type="number" min="0" max="250" required="required"/>
+							<i style="color: red; display:none" id="systolicValid"></i>
 						</span>
-
-						<label>Blood Pressure (Diastolic)</label>
+					</div>
+					<div class="col12 daily-vitals">
+						<label>Blood Pressure <br>(Diastolic)</label>
 						<span>
-							<input id="vitalStatisticsDiastolicBloodPressure" name="vitalStatisticsDiastolicBloodPressure" placeholder="Blood Pressure" type="number"/>
+							<input id="vitalStatisticsDiastolicBloodPressure" name="vitalStatisticsDiastolicBloodPressure" placeholder="Blood Pressure" type="number" min="0" max="150" required="required"/>
+							<i style="color: red; display:none" id="diastolicValid"></i>
 						</span>
-						
+					</div>
+					<div class="col12 daily-vitals">
 						<label>Temperature</label>
 						<span>
-							<input id="vitalStatisticsTemperature" name="vitalStatisticsTemperature" placeholder="Temperature(C)"  type="number"/>
+							<input id="vitalStatisticsTemperature" name="vitalStatisticsTemperature" placeholder="Temperature(C)"  type="number" min="25" max="43" required="required"/>
+							<i style="color: red; display:none" id="tempValid"></i>
 						</span>
 					</div>
 					
 					<div class="col12 daily-vitals">
 						<label>Pulse Rate</label>
 						<span>
-							<input id="vitalStatisticsPulseRate" name="vitalStatisticsPulseRate" placeholder="Pulse Rate(/min)" type="number">
+							<input id="vitalStatisticsPulseRate" name="vitalStatisticsPulseRate" placeholder="Pulse Rate(/min)" type="number" min="0" max="230" required="required"/>
+							<i style="color: red; display:none" id="pulseValid"></i>
 						</span>
 					
 						<label>Diet Advised</label>
